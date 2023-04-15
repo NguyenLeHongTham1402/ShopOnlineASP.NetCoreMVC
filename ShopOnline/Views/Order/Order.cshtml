@@ -1,0 +1,126 @@
+﻿@section CSS{
+    <link href="~/css/User/order-hed.css" rel="stylesheet" />
+}
+
+@{
+    string username = User.Claims.FirstOrDefault().Value.ToString();
+    string name_ord = User.Claims.Skip(1).Take(1).ToArray()[0].Value.ToString();
+    string email_ord = User.Claims.Skip(2).Take(1).ToArray()[0].Value.ToString();
+    string bank_name = "Ngân hàng Nam Á chi nhánh Long An";
+    string bank_number = "604086420800001";
+    string name = "NGUYEN LE HONG THAM";
+    string note = name_ord + " + "+ username;
+}
+<h2 class="order-title">Thông tin đơn hàng </h2>
+@if (TempData["cNotificationOrder"] != null)
+{
+    <div class="alert alert-info alert-dismissible container">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Thông báo!</strong> @TempData["cNotificationOrder"].ToString()
+    </div>
+}
+<form method="post" asp-action="Order" asp-controller="Order">
+    <div class="cart-info">
+        <div class="cart-info-1">
+            <div class="form-group">
+                <label for="Username" class="form-label">Tên đăng nhập</label>
+                <input id="Username" class="form-control" name="Username" type="text" value="@username" readonly />
+            </div>
+            <div class="form-group">
+                <label for="OrderName" class="form-label">Họ tên người đặt</label>
+                <input id="OrderName" class="form-control" name="OrderName" type="text" value="@name_ord" readonly/>
+            </div>
+            <div>
+                <label for="Email" class="form-label">Email người đặt</label>
+                <input id="Email" class="form-control" name="Email" type="email" value="@email_ord" readonly/>
+            </div>
+            <div class="form-group was-validated">
+                <label for="Phone" class="form-label">Số điện thoại người đặt</label>
+                <input id="Phone" class="form-control is-invalid" name="Phone" type="tel" data-format="ddd-ddd-dddd" required/>
+            </div>
+            <div class="form-group was-validated">
+                <label for="ReceivedDate" class="form-label">Ngày nhận</label>
+                <input type="datetime-local" min="@DateTime.Now" class="form-control is-invalid" id="ReceivedDate" name="ReceivedDate" required/>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Hình thức giao hàng</label>
+                <div class="form-check">
+                    <input onclick="changeValueFee(this)" class="form-check-input" type="radio" name="Transport" id="Transport1" value="Offline" checked>
+                    <label class="form-check-label" for="Transport1">
+                        Lấy trực tiếp tại cửa hàng
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input onclick="changeValueFee(this)" class="form-check-input" type="radio" name="Transport" id="Transport2" value="GHTK">
+                    <label class="form-check-label" for="Transport2">
+                        Giao hàng tiết kiệm
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input onclick="changeValueFee(this)" class="form-check-input" type="radio" name="Transport" id="Transport3" value="GHN">
+                    <label class="form-check-label" for="Transport3">
+                        Giao hàng nhanh
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group fee">
+                <label class="form-label">Phí giao hàng</label>
+                <input class="form-control" name="TransportFee" id="TransportFee" value="0" readonly /> VNĐ
+            </div>
+        </div>
+        <div class="cart-info-2">
+            <div class="form-group was-validated">
+                <label for="Receiver" class="form-label">Họ tên người nhận</label>
+                <input id="Receiver" class="form-control is-invalid" name="Receiver" type="text" required/>
+            </div>
+            <div class="form-group was-validated">
+                <label for="Address" class="form-label">Địa chỉ giao hàng</label>
+                <textarea id="Address" class="form-control is-invalid" name="Address" type="text" rows="4" required></textarea>
+            </div>
+            <div class="form-group was-validated">
+                <label for="Note" class="form-label">Số điện thoại người nhận</label>
+                <input id="Note" class="form-control is-invalid" name="PhoneReceiver" type="tel" data-format="ddd-ddd-dddd" required/>
+            </div>
+            <div class="form-group was-validated">
+                <label for="Note" class="form-label">Ghi chú</label>
+                <textarea id="Note" class="form-control is-invalid" name="Note" type="text" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Hình thức thanh toán</label>
+                <div class="form-check">
+                    <input onclick="hideInfor(this)" class="form-check-input" type="radio" name="Payment" id="HinhThuc1" value="TienMat" checked>
+                    <label class="form-check-label" for="HinhThuc1">
+                        Thanh toán bằng tiền mặt
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input onclick="hideInfor(this)" class="form-check-input" type="radio" name="Payment" id="HinhThuc2" value="PayPal" disabled>
+                    <label class="form-check-label" for="HinhThuc2">
+                        Thanh toán bằng ví Momo
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input onclick="displayInfor(this)" class="form-check-input" type="radio" name="Payment" id="HinhThuc3" value="ChuyenKhoan">
+                    <label class="form-check-label" for="HinhThuc3">
+                        Chuyển khoản ngân hàng
+                    </label>
+                </div>
+                <div id="infor-banking" style="display:none;">
+                    <div>Tên ngân hàng: <span>@bank_name</span></div>
+                    <div>Số tài khoản: <span>@bank_number</span></div>
+                    <div>Tên người hưởng thụ: <span>@name</span></div>
+                    <div>Nội dung chuyển khoản: <span>@note</span>. Vui lòng nhập như trên để cửa hàng kiểm soát.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-order">
+        <button type="submit" class="btn">Đặt hàng</button>
+    </div>
+</form>
+
+
+@section Scripts{
+    <script src="~/js/order.js" type="text/javascript"></script>
+}

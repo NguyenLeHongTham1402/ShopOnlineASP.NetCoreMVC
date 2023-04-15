@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    List<Product> listProducts = ViewData["ListProducts"] as List<Product>;
+}
+@section CSS{
+    <link href="~/css/home.css" rel="stylesheet" />
+}
+
+<div id="demo" class="carousel slide container" data-bs-ride="carousel">
+
+    <!-- Indicators/dots -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+    </div>
+
+    <!-- The slideshow/carousel -->
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://res.cloudinary.com/dp50hyprx/image/upload/v1680597655/hat-box-flowers-pink-flowers-lily-bouquet-builder-the-little-flower-shop-red-roses-scaled-e1607345712394_oxghmt.webp" alt="Los Angeles" class="d-block w-100" height="350">
+        </div>
+        <div class="carousel-item">
+            <img src="https://res.cloudinary.com/dp50hyprx/image/upload/v1680597767/Social-Sharing_etrkfr.jpg" alt="Chicago" class="d-block w-100" height="350">
+        </div>
+        <div class="carousel-item">
+            <img src="https://res.cloudinary.com/dp50hyprx/image/upload/v1680598504/slide1_wsr1gs.jpg" alt="New York" class="d-block w-100" height="350">
+        </div>
+    </div>
+
+    <!-- Left and right controls/icons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+<div class="distance"></div>
+<form class="container" style="width:40%; text-align:center;">
+    <input style="width:100%;" class="form-control mt-3" name="fromPrice" type="number" min="0" placeholder="From Price . . ." aria-label="From Price">
+    <input style="width:100%;" class="form-control mt-3 mb-3" name="toPrice" type="number" min="0" placeholder="To Price . . ." aria-label="To Price">
+    <button class="btn btn-outline-success mb-3" type="submit">Search</button>
+    <button class="btn btn-outline-danger mb-3" onclick="resetPage()" type="button">Reset</button>
+</form>
+<hr />
+<h4>Một số sản phẩm</h4>
+<hr />
+<div class="row">
+    @if (listProducts != null)
+    {
+        @foreach (var item in listProducts)
+        {
+            <div id="prod_@item.Id" class="col-md-2 col-6 prod-card">
+                <a onclick="updateView('/Update/ProductView/@item.Id')" class="link-prod-card" asp-action="DetailProduct" asp-route-id="@item.Id" asp-controller="Home">
+                    <div class="card">
+                        <div class="card-img">
+                            <img class="card-img-top" src="@item.Image" alt="Hình ảnh">
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">@item.Name</h4>
+                            @*@{
+                                    var price = Convert.ToDecimal(item.Price);
+                                }*@
+                            <p class="card-text">@String.Format("{0:N}", item.Price) VNĐ</p>
+                            <p class="fst-italic fw-normal view"><i class="fa fa-eye" aria-hidden="true"></i> @string.Format("{0:N}", item.View) lượt xem</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        function updateView(endpoint) {
+            fetch(endpoint, {
+                method: "PATCH"
+            }).then(res => {
+                console.info(res);
+            })
+        }
+
+        function resetPage() {
+            window.location.replace("/");
+        }
+    </script>
+}

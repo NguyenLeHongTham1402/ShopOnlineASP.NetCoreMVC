@@ -1,0 +1,27 @@
+﻿.fm-create {
+    max-width: 518px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 9px;
+    margin-top: 20px;
+}
+.btn-save {
+    min-width: 90%;
+    padding: 5px;
+    text-transform: uppercase;
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+}
+h2.title-create{
+    background-color:deeppink;
+    padding:8px;
+    text-align:center;
+    color:white;
+    text-transform:uppercase;
+    margin-top:20px;
+    margin-bottom:20px;
+}

@@ -1,0 +1,30 @@
+﻿@model ShopOnline.Models.User
+@{
+}
+@section CSS{
+    <link rel="stylesheet" href="~/css/User/signin.css" />
+}
+@if (TempData["SignInNoti"] != null)
+{
+    <div class="alert alert-danger text-center alert-dismissible fade show" role="alert">
+        <strong>Thông báo!</strong> @TempData["SignInNoti"].ToString()
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="container fm-signin">
+    <h3 class="text-center fw-bold text-uppercase title-signin">Đăng nhập</h3>
+    <form asp-action="SignIn" method="post">
+        <div class="form-group mb-3 mt-3">
+            <label asp-for="Username" class="form-label">Tên đăng nhập</label>
+            <input asp-for="Username" class="form-control" type="text" autocomplete="off" />
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Password" class="form-label">Mật khẩu</label>
+            <input asp-for="Password" class="form-control" type="password" />
+        </div>
+        <div class="form-group mb-3">
+            <button type="submit" class="btn btn-warning">Đăng nhập</button>
+        </div>
+        <p class="text-center fst-italic">Chưa có tài khoản? <a asp-action="SignUp" asp-controller="User">đăng ký</a></p>
+    </form>
+</div>

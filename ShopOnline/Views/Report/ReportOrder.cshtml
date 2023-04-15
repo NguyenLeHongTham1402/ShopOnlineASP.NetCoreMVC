@@ -1,0 +1,45 @@
+﻿@{
+    List<string> chartType = new List<string> { "bar", "doughnut", "line", "polarArea" };
+}
+
+@section CSS{
+    <link href="~/css/Admin/report.css" rel="stylesheet" />
+}
+
+<h3 class="text-uppercase text-center">Báo cáo về doanh thu</h3>
+
+<div class="fm-inform row">
+    <div class="col-md-4">
+        <select id="ChartType" class="form-select text-capitalize mb-5 container" aria-label="Default select example">
+            <option selected>None</option>
+            @foreach (var item in chartType)
+            {
+                <option value="@item">@item Chart</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-6">
+        <form class="fm-report-prod">
+            <select id="year" name="year" class="form-select mb-3 container" aria-label="Default select example">
+                @for (int i = 2022; i <= DateTime.MaxValue.Year; i++)
+                {
+                    <option id="year_@i" value="@i">Năm @i</option>
+                }
+            </select>
+        </form>
+    </div>
+    <div class="col-md-2 mb-3 text-center">
+        <button type="button" id="show-chart" onclick="changeChartType()" class="btn btn-info text-uppercase fw-bold mb-3">Hiện Thị Biểu Đồ</button>
+        <button type="button" id="reset-chart" onclick="refreshPage()" class="btn btn-danger text-uppercase fw-bold">Đặt lại</button>
+    </div>
+</div>
+<div class="row charts mt-3">
+    <div class="col-md-6 container">
+        <canvas id="prodChart_1"></canvas>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/report-order.js" type="text/javascript"></script>
+}

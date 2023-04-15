@@ -1,0 +1,63 @@
+﻿@model ShopOnline.Models.Product
+@{
+}
+
+@section CSS{
+    <link href="~/css/Admin/create-prod.css" rel="stylesheet" />
+}
+
+<h2 class="title-create">Tạo sản phẩm</h2>
+@if (TempData["cProductNoti"] != null)
+{
+    <div class="alert alert-info alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Thông báo!</strong> @TempData["cProductNoti"].ToString()
+    </div>
+}
+<div class="container fm-create">
+    <form class="was-validated" method="post" enctype="multipart/form-data" asp-action="Create" asp-controller="Product">
+        <div class="form-group mt-3 mb-3">
+            <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+            <input asp-for="Name" class="form-control" type="text" placeholder="Nhập tên sản phẩm . . ." required/>
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền dữ liệu vào trường này!</div>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Nhập mô tả sản phẩm . . ." required></textarea>
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền dữ liệu vào trường này!</div>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Image" class="form-label">Ảnh sản phẩm</label>
+            <input asp-for="Image" class="form-control" type="file" accept="image/*" required/>
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng thêm tệp ảnh vào trường này!</div>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="CategoryId" class="form-label">Danh mục</label>
+            @Html.DropDownListFor(model => model.CategoryId, ViewData["Categories"] as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Note" class="form-label">Ghi chú</label>
+            <input asp-for="Note" class="form-control" type="text" placeholder="Nhập ghi chú . . ." required/>
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền dữ liệu vào trường này!</div>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Price" class="form-label">Giá sản phẩm</label>
+            <input asp-for="Price" class="form-control" type="number" min="0" required />
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền dữ liệu vào trường này!</div>
+        </div>
+        <div class="form-group text-center mb-3">
+            <input type="submit" value="Lưu" class="btn-save" />
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+    </script>
+}

@@ -1,0 +1,53 @@
+﻿@model ShopOnline.Models.User
+@{
+}
+@section CSS{
+    <link rel="stylesheet" href="~/css/User/signup.css" />
+}
+
+@if (TempData["SignUpNoti"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+        <strong>Thông báo!</strong> @TempData["SignUpNoti"].ToString()
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="container fm-signup">
+    <h3 class="title-signup">Đăng ký tài khoản</h3>
+    <form class="g-3 was-validated" asp-action="SignUp" method="post" enctype="multipart/form-data">
+        <div class="form-group mb-3 mt-3">
+            <label asp-for="Username" class="form-label">Tên đăng nhập</label>
+            <input asp-for="Username" class="form-control" type="text" placeholder="Nhập tên đăng nhập . . ." required autocomplete="off"/>
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền vào trường này!</div>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Password" class="form-label">Mật khẩu</label>
+            <input asp-for="Password" class="form-control" type="password" placeholder="Nhập mật khẩu . . ." pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" maxlength="20" required />
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền vào trường này! Mật khẩu có tối thiểu 8 ký tự và tối đa 20 ký tự (bao gồm: ký tự chữ hoa, thường và chữ số)!</div>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Name" class="form-label">Họ và tên</label>
+            <input asp-for="Name" class="form-control" type="text" placeholder="Nhập họ và tên . . ." required />
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền vào trường này!</div>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" type="email" placeholder="Nhập email . . ." required />
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền vào trường này!</div>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Avatar" class="form-label">Ảnh đại diện</label>
+            <input asp-for="Avatar" class="form-control" type="file" accept="image/*" required />
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền vào trường này!</div>
+        </div>
+        <div class="form-group mb-3">
+            <button type="submit" class="btn btn-primary text-uppercase fw-bold">Đăng ký</button>
+        </div>
+        <p class="fst-italic text-center">Đã có tài khoản? <a class="text-uppercase fw-bold fst-normal" asp-action="SignIn" asp-controller="User">Đăng nhập</a></p>
+    </form>
+</div>

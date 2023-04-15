@@ -1,0 +1,69 @@
+﻿@model ShopOnline.Models.OrderSale
+@{
+}
+@section CSS{
+    <link href="~/css/User/orderDtl.css" rel="stylesheet" />
+}
+<h2 class="title-ordelDtl">Chi tiết đơn hàng</h2>
+
+<div class="distance"></div>
+
+<div class="row orderDtl-body">
+    <div class="col-md-6 col-12">
+        <p>Người đặt hàng: <span>@Model.OrderName</span></p>
+        <p>Số điện thoại người đặt: <span>@Model.Phone</span></p>
+        <p>Địa chỉ: <span>@Model.Address</span></p>
+        @{ 
+            var order_date = (Model.CreatedDate ?? DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss");
+            var receiv_date = (Model.ReceivedDate ?? DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss");
+        }
+        <p>Ngày đặt: <span>@order_date</span></p>
+        <p>Ngày nhận: <span>@receiv_date</span></p>
+
+    </div>
+    <div class="col-md-6 col-12">
+        <p>Người nhận: <span>@Model.Receiver</span></p>
+        <p>Ghi chú: <span>@Model.Status</span></p>
+        <p>Hình thức vận chuyển: <span>@Model.Transportion</span></p>
+        <p>Phí vận chuyển: <span>@string.Format("{0:N} VNĐ", Model.TransportFee)</span></p>
+        @{ 
+            var status_paid = Model.IsPaid == true ? "Đã thanh toán" : "Chưa thanh toán";
+        }
+        <p>Tình trạng thanh toán: <span>@status_paid</span></p>
+    </div>
+</div>
+
+<div class="distance"></div>
+
+<div class="container orderDtl-table mt-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mã sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderDtls)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>@string.Format("{0:N} VNĐ", item.Total)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="distance"></div>
+
+<div class="total-orderDtl container">
+    @{
+        var total = Model.OrderDtls.Sum(x => x.Total) + Model.TransportFee;
+    }
+    <p>Tổng tiền: <span>@string.Format("{0:N} VNĐ", total)</span></p>
+</div>

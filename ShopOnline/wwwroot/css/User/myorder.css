@@ -1,0 +1,31 @@
+﻿.fa-bars{
+    margin-left:2px;
+    color:blue;
+}
+
+.fa-trash{
+    color:red;
+}
+
+tbody td:nth-child(1) a{
+    text-decoration:none;
+}
+
+.title-ord {
+    text-align: center;
+    color: orange;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.distance {
+    background-color: orange;
+    padding: 15px;
+    margin-top: 13px;
+    margin-bottom: 13px;
+}
+
+tbody{
+    font-size:14px;
+}

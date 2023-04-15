@@ -1,0 +1,31 @@
+﻿@model ShopOnline.Models.Category
+@{
+}
+
+@section CSS{
+    <link rel="stylesheet" href="~/css/Admin/create-edit-cate.css" />
+}
+
+<h2>Tạo danh mục</h2>
+
+@if (TempData["CreateCateNoti"] != null)
+{
+    <div class="alert alert-primary alert-dismissible text-center">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Thông báo!</strong> @TempData["CreateCateNoti"].ToString()
+    </div>
+}
+
+<div class="container fm-create-edit">
+    <form class="was-validated" method="post" asp-action="Create" asp-controller="Category">
+        <div class="form-group mt-3 mb-3">
+            <label asp-for="Name" class="forn-label"></label>
+            <input asp-for="Name" class="form-control" type="text" placeholder="Nhập tên danh mục . . ." required/>
+            <div class="valid-feedback">Hợp lệ!</div>
+            <div class="invalid-feedback">Vui lòng điền dữ liệu vào trường này!</div>
+        </div>
+        <div class="form-group text-center">
+            <input class="btn btn-primary" type="submit" value="Lưu" />
+        </div>
+    </form>
+</div>

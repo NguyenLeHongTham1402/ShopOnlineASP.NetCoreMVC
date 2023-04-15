@@ -1,0 +1,68 @@
+﻿body {
+    background-color: rgb(255,239,240);
+}
+h2.title-cates {
+    color: white;
+    background-color: #ec4899;
+    text-transform: uppercase;
+    text-align: center;
+    padding:6px;
+}
+
+.table{
+    text-align:center;
+    color:gray;
+}
+
+thead {
+    background-color: #ec4899;
+    color:white;
+}
+
+.edit-cate{
+    margin-right:7px;
+}
+
+.edit-cate i{
+    color:blue;
+    font-size:1.5rem;
+}
+
+.delete-cate i {
+    color: red;
+    font-size: 1.5rem;
+}
+
+.create {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+.create input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 0.8rem;
+    border: 1px solid hotpink;
+}
+
+.create a{
+    text-decoration:none;
+}
+
+p.create-cate {
+    width: 50%;
+    text-transform: uppercase;
+    color: deeppink;
+    font-weight: bold;
+    padding: 10px;
+    margin: 0;
+    text-align: center;
+    border-radius: 5px 10px;
+    border: 1.5px solid deeppink;
+}
+
+p.create-cate:hover {
+    background-color: deeppink;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 5px 10px 20px;
+}

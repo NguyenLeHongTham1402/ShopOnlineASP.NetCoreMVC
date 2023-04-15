@@ -1,0 +1,37 @@
+﻿#ChartType{
+    text-align:center;
+    width:80%;
+}
+
+#month, #year{
+    text-align:center;
+    width:55%
+}
+
+#reset-chart {
+    color: white;
+    display: none;
+    width:100%;
+}
+
+#show-chart {
+    color: white;
+    width: 100%;
+}
+
+h3 {
+    color: #f79f8e;
+    margin-top:25px;
+    margin-bottom:28px;
+}
+
+@media (max-width: 1200px) {
+    #reset-chart {
+        font-size:12px;
+        
+    }
+
+    #show-chart {
+        font-size: 12px;
+    }
+}

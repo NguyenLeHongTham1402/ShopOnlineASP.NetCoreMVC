@@ -1,0 +1,167 @@
+﻿@model IEnumerable<ShopOnline.Models.Product>
+@{
+}
+
+@section CSS{
+    <link href="~/css/Admin/list-prod.css" rel="stylesheet" />
+}
+<h2 class="title-prods">Danh sách sản phẩm</h2>
+@if (TempData["eProductNoti"] != null)
+{
+    <div class="alert alert-success alert-dismissible text-center">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Thông báo!</strong> @TempData["eProductNoti"]
+    </div>
+}
+
+@if (TempData["dProductNoti"] != null) { 
+    <div class="alert alert-danger alert-dismissible text-center">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Thông báo!</strong> @TempData["dProductNoti"]
+    </div>
+}
+
+<div class="container row fm-create-prod">
+    <div class="col-md-4">
+        <a class="link-prod" asp-action="Create" asp-controller="Product">
+            <p class="prod-create">create</p>
+        </a>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-7">
+        <input class="prod-search form-control" id="prod-search" type="text" />
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Ảnh</th>
+            <th>Id</th>
+            <th>Tên sản phẩm</th>
+            <th>Mô tả</th>
+            <th>Danh mục</th>
+            <th>Ngày tạo</th>
+            <th>Ghi chú</th>
+            <th>Giá</th>
+            <th>Lượt xem</th>
+            <th>Hoạt động?</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr class="tr-search">
+                    <td>
+                        <span data-bs-toggle="modal" data-bs-target="#deModal" onclick="deleteFormProduct(@item.Id)" class="delete-prod"><i class="fa fa-trash" aria-hidden="true"></i></span>
+                        @{
+                            var prod_now = Json.Serialize(item).ToString();
+                        }
+                        <span data-bs-toggle="modal" data-bs-target="#edModal" class="edit-prod" onclick="editFormProd(`@prod_now`)">
+                            <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                        </span>
+                    </td>
+                    <td>
+                        <img src="@item.Image" alt="Ảnh" style="max-width:120px;" />
+                    </td>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Category.Name</td>
+                    <td>@item.CreatedDate</td>
+                    <td>@item.Note</td>
+                    <td>@item.Price</td>
+                    <td>@item.View</td>
+                    @if (item.IsActive == true)
+                    {
+                        <td>
+                            <input class="form-check-input" type="checkbox" checked readonly />
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <input class="form-check-input" type="checkbox" readonly />
+                        </td>
+                    }
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@*Modal chỉnh sửa sản phẩm*@
+<div class="modal" id="edModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Cập Nhật Sản Phẩm</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" class="fm-update-prod">
+                    <input id="Id" name="Id" type="text" class="form-control mt-3 mb-3" readonly />
+                    <input id="Name" name="Name" type="text" class="form-control mb-3" placeholder="Nhập tên sản phẩm . . ." />
+                    <textarea id="Description" name="Description" rows="5" class="form-control mb-3" placeholder="Nhập mô tả sản phẩm . . ."></textarea>
+                    <div class="form-group mb-3" style="text-align:center;">
+                        <input id="Image" name="Image" type="file" class="form-control mb-3" />
+                        <img max-width="100" id="prod-image" src="~/images/default-image.jpg" alt="Hình ảnh" />
+                        <p class="text-muted text-center" id="note-image">Chưa có hình ảnh nào được lưu trữ.</p>
+                    </div>
+                    @Html.DropDownList("CategoryId", @ViewData["CategoryId"] as SelectList, new { @class = "form-select mb-3", @id = "CategoryId" , @name= "CategoryId" })
+                    <input id="Note" name="Note" type="text" placeholder="Nhập ghi chú . . ." class="form-control mb-3" />
+                    <input id="Price" name="Price" type="number" class="form-control mb-3" />
+                    <input id="CreatedDate" name="CreatedDate" type="datetime-local" class="form-control mb-3" />
+                    <input id="View" name="View" type="number" class="form-control mb-3" />
+                    <div class="form-group mb-3">
+                        <label class="form-label" for="IsActive">Trạng thái hoạt động</label>
+                        <input id="IsActive" name="IsActive" type="checkbox" class="form-check-input mb-3" value="true" />
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" onclick="editProduct('/Product/Edit/')" class="btn btn-primary">Lưu Thay Đổi</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*Modal xóa sản phẩm*@
+<div class="modal" id="deModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa Sản Phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa?</p>
+                <form method="post">
+                    <input class="form-control" type="text" name="Id" id="del-prod" hidden/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" onclick="deleteProduct('/Product/Delete/')" class="btn btn-danger">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/list-prod.js" asp-append-version="true" type="text/javascript"></script>
+}

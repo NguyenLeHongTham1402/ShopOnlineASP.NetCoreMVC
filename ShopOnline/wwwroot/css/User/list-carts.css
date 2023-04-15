@@ -1,0 +1,53 @@
+﻿.carts-1{
+    margin-bottom:20px;
+}
+
+.money {
+    padding: 28px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border: 2px solid orangered;
+    color: orangered;
+    font-weight: bold;
+    font-size: 18px;
+    max-width: 80%;
+    background-color: antiquewhite;
+    text-align: center;
+}
+
+.money span{
+    font-weight:normal;
+    color:black;
+}
+.payment {
+    text-align: center;
+    padding: 20px;
+}
+
+.payment a {
+    text-decoration: none;
+    padding: 10px;
+    min-width: 40%;
+    border: none;
+    color: white;
+    text-transform:uppercase;
+    font-weight:400;
+    background: linear-gradient(to left bottom, orange, orangered);
+}
+
+@media(max-width:468px){
+    .money{
+        font-size:12px;
+    }
+
+    table.table{
+        font-size:12px;
+    }
+}
+
+.cart-title {
+    text-align: center;
+    text-transform: uppercase;
+    color: #f7938e;
+    margin-bottom: 25px;
+}

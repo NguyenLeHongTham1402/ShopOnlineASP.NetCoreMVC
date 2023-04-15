@@ -1,0 +1,177 @@
+﻿.img-prod{
+    max-height:530px;
+    width:90%;
+    border-radius:15px;
+}
+
+.des-prod-title{
+    text-transform:uppercase;
+    font-size:18px;
+    margin-bottom:15px;
+}
+
+.arrow {
+    position: sticky;
+    left: 100%;
+}
+
+.fa-chevron-down{
+    display:none;
+}
+
+.fa-chevron-up{
+    display:inline;
+}
+
+.des-prod{
+    display:block;
+    font-size:16px;
+    letter-spacing:1.5px;
+    line-height:2;
+}
+
+.note {
+    font-size: 16.5px;
+    font-weight: bold;
+    color: #f7938e;
+    text-decoration: solid;
+    margin-top:15px;
+}
+
+.note div {
+    color: dimgrey;
+    font-size: 15px;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.prod-name {
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: 495;
+}
+
+.price-prod {
+    font-weight: bold;
+    color: #f7938e;
+    text-align: right;
+    font-size: 18px;
+    margin-right: 15%;
+}
+
+.detail-prod > div:nth-child(1){
+    margin-bottom:28px;
+    text-align:center;
+}
+
+.row{
+    margin-top:28px;
+}
+label {
+    color: gray;
+    margin-bottom: 5px;
+}
+
+#quantity {
+    max-width: 160px;
+    border: 5px solid #f7938e;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.btn-common{
+    margin-top:6%;
+}
+
+.btn-common button, .btn-common a {
+    padding: 8px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 500;
+    width: 49%;
+    border: none;
+    border-radius: 12px;
+}
+
+.btn-add-cart {   
+    background-color: blue;   
+    margin-right:1%
+}
+
+.btn-continue {
+    background-color: red;
+    border-radius: 12px;
+    text-decoration:none;
+}
+
+.fa-cart-plus, .fa-cart-arrow-down {
+    margin-right: 6px;
+}
+
+.comments{
+    margin-top:40px;
+}
+
+.content-cmt{
+    text-align:center;
+}
+
+.cmt-fm{
+    width:90%;
+
+}
+
+.content-cmt button{
+    width:20%;
+    text-transform:uppercase;
+    font-weight:500;
+}
+
+.list-cmt img {
+    max-width: 90px;
+}
+
+.list-cmt > div {
+    padding-bottom: 15px;
+    border-bottom: 1.5px solid;
+}
+
+.list-cmt > div > div:nth-child(1){
+    text-align:center;
+}
+
+@media(max-width:565px){
+    .des-prod{
+        font-size:13.5px;
+    }
+    .content-cmt {
+        font-size: 12px;
+    }
+    .list-cmt img {
+        max-width: 50px;
+    }
+    .btn-common button, .btn-common a {
+        font-size: 12px;
+        padding: 8px;
+        width:48%;
+    }
+    .content-cmt button{
+        width:35%;
+    }
+
+    .prod-name{
+        margin-top:20px;
+    }
+}
+
+@media(max-width:1150px){
+    .btn-common button{
+        width:48%;
+        font-size:9px;
+    }
+
+    .btn-common a{
+        width:48%;
+        font-size:10px;
+    }
+}

@@ -1,0 +1,93 @@
+﻿@model ShopOnline.Models.Product
+@{
+    List<Comment> comments = ViewData["ListComment"] as List<Comment>;
+}
+
+@section CSS{ 
+    <link href="~/css/product-detail.css" rel="stylesheet"/>
+}
+
+<div class="row">
+    <div class="col-md-7 col-12 detail-prod">
+        <div>
+            <img src="@Model.Image" alt="Hình Ảnh" class="img-prod" />
+        </div>
+        <div onclick="eventDes()" class="des-prod-title">
+            Mô tả
+            <i class="fa fa-chevron-down arrow" aria-hidden="true"></i>
+            <i class="fa fa-chevron-up arrow" aria-hidden="true"></i>
+        </div>
+        <div class="des-prod">@Model.Description</div>
+        <div class="note">
+            Chú ý
+            <div>@Model.Note</div>
+        </div>
+    </div>
+    <div class="col-md-5 col-12 order-prod">
+        <p class="prod-name">@Model.Name</p>
+        <hr style="max-width:165px"/>
+        <div class="price-prod">@String.Format("{0:N}", Model.Price) VNĐ</div>
+        <div>
+            <label for="quantity">Số lượng:</label>
+            <input id="quantity" type="number" value="1" min="0" class="form-control"/>
+        </div>
+        <div class="btn-common">
+            @{ 
+                var prod = Json.Serialize(Model).ToString();
+            }
+            <button type="button" onclick="addToCart('/Cart/AddCart/', `@prod`)" class="btn-add-cart"><i class="fa fa-cart-plus" aria-hidden="true"></i>Thêm vào giỏ hàng</button>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-continue"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>Tiếp tục đặt hàng</a>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="comments">
+    <h4>Nội dung bình luận</h4>
+    <div class="content-cmt">
+        <form class="cmt-fm">
+            <input class="form-control mt-3 mb-3" name="Title" type="text" placeholder="Nhập chủ đề . . ." />
+            <textarea class="form-control mb-3" rows="4" name="Content" placeholder="Nhập nội dung . . ."></textarea>
+        </form>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <button onclick="addComment('/Comment/Create/@Model.Id')" class="btn btn-danger">Đăng tải</button>
+        }
+        else
+        {
+            <button onclick="addComment('/Comment/Create/@Model.Id')" class="btn btn-danger" disabled>Đăng tải</button>
+            <p class="fst-italic mt-2" style="font-size:13px">Vui lòng <a asp-action="SignIn" asp-controller="User">đăng nhập</a> để có thể viết bình luận</p>
+        }
+    </div>
+
+    <div class="list-cmt">
+        <h4>@comments.Count Bình luận</h4>
+        @if (comments != null)
+        {
+            @foreach (var item in comments)
+            {
+                <div class="row">
+                    <div class="col-md-2 col-2">
+                        <img src="@item.UsernameNavigation.Avatar" alt="avatar" class="rounded-circle" />
+                    </div>
+                    <div class="col-md-8 col-8">
+                        <h6>@item.Title</h6>
+                        <p>@item.Content</p>
+                        <p>@item.CreatedDate - @item.Username</p>
+                    </div>
+                    <div class="col-md-2 col-2">
+                        @if (User.IsInRole("ADMIN"))
+                        {
+                            <button class="btn btn-danger" type="button" onclick="deleteComment('/Comment/Delete/@item.Id')">Xóa</button>
+                        }
+                    </div>
+                </div>
+            }
+
+        }
+
+    </div>
+</div>
+
+@section Scripts{ 
+    <script src="~/js/product-detail.js" type="text/javascript"></script>
+}

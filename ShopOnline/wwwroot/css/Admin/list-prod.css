@@ -1,0 +1,73 @@
+﻿h2.title-prods {
+    color: white;
+    background-color: #ec4899;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 6px;
+}
+
+.prod-create {
+    width: 50%;
+    padding: a;
+    background-color: deeppink;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.fm-create-prod input{
+    width: 90%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1.5px solid deeppink;
+}
+
+.link-prod {
+    text-decoration: none;
+}
+
+.fm-create-prod {
+    margin-top: 25px;
+    margin-bottom: 7px;
+}
+
+table thead {
+    background-color: #ec4899;
+    color:white;
+    text-align:center;
+}
+.delete-prod{
+    margin-right:6px;
+}
+
+.delete-prod i{
+    color:red;
+    font-size:14px;
+}
+
+.edit-prod i {
+    color: blue;
+    font-size: 14px;
+}
+
+@media(max-width:990px){
+    table {
+        font-size: 10px;
+    }
+
+    img {
+        max-width: 85px !important;
+    }
+}
+
+@media (max-width:768px){
+    table{
+        font-size:3px;
+    }
+    img{
+        max-width:25px !important;
+    }
+}

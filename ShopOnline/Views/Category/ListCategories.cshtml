@@ -1,0 +1,173 @@
+﻿@model IEnumerable<ShopOnline.Models.Category>
+@{ }
+
+@section CSS{
+    <link href="~/css/Admin/list-cate.css" rel="stylesheet" />
+}
+<h2 class="title-cates">Danh sách danh mục</h2>
+@if (TempData["EditCateNoti"] != null)
+{
+    <div class="alert alert-info alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Thông báo!</strong> @TempData["EditCateNoti"].ToString()
+    </div>
+}
+
+@if (TempData["DeleteCateNoti"] != null) { 
+    <div class="alert alert-info alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Thông báo!</strong> @TempData["DeleteCateNoti"].ToString()
+    </div>
+}
+
+<div class="create row">
+    <div class="col-md-4 col-12">
+        <a asp-action="Create" asp-controller="Category">
+            <p class="create-cate">Create</p>
+        </a>
+    </div>
+    <div class="col-md-1 col-12" style="margin-top:5px; margin-bottom:5px;"></div>
+    <div class="col-md-7 col-12">
+        <input class="search-cate form-control" id="search-cate" type="text" placeholder="Nhập từ khóa . . ." />
+    </div>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Mã</th>
+            <th>Tên</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr class="tr-search" id="cate_@item.Id">
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>
+                        <span onclick="editFormCategory(`@item.Id`, `@item.Name`)" class="edit-cate" data-bs-toggle="modal" data-bs-target="#edModal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+                        <span onclick="deleteFormCategory(`@item.Id`)" class="delete-cate" data-bs-toggle="modal" data-bs-target="#deModal"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@*Modal Edit*@
+<div class="modal" id="edModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Cập nhật danh mục</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="post" class="edit-form">
+                    <input id="cate-id" name="Id" type="text" class="form-control mt-3 mb-3" readonly />
+                    <input id="cate-name" name="Name" type="text" class="form-control mb-3" placeholder="Nhập tên danh mục . . ." />
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" onclick="editCategory('/Category/Edit/')" class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*Modal Delete*@
+<div class="modal" id="deModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Xác nhận</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa?
+                <form method="post" class="edit-form">
+                    <input id="deCate-id" name="Id" type="text" class="form-control mt-3 mb-3" hidden />
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" onclick="deleteCategory('/Category/Delete/')" class="btn btn-primary">Xóa</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        function editFormCategory(id, name) {
+            document.getElementById("cate-id").value = id;
+            document.getElementById("cate-name").value = name;
+        }
+
+        function editCategory(endpoint) {
+            endpoint = endpoint + document.getElementById("cate-id").value;
+
+            let formData = new FormData(document.querySelector('.edit-form'));
+            fetch(endpoint, {
+                method: "PATCH",
+                body: formData
+            }).then(res => {
+                res.json();
+
+                window.location.reload();
+            })
+        }
+
+        function deleteFormCategory(id) {
+            document.getElementById('deCate-id').value = id;
+        }
+
+        function deleteCategory(endpoint) {
+            let cate_id = document.getElementById('deCate-id').value;
+            endpoint = endpoint + cate_id;
+            fetch(endpoint, {
+                method: "DELETE"
+            }).then(res => {
+                console.info(res);
+
+                window.location.reload();
+            })
+        }
+
+        $(document).ready(function () {
+            function Contains(text_one, text_two) {
+                if (text_one.indexOf(text_two) != -1)
+                    return true;
+            }
+            $("#search-cate").keyup(function () {
+                var searchText = $("#search-cate").val().toLowerCase();
+                $(".tr-search").each(function () {
+                    if (!Contains($(this).text().toLowerCase(), searchText)) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
+                });
+            });
+        });
+    </script>
+}

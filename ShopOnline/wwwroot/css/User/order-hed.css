@@ -1,0 +1,79 @@
+﻿.cart-info {
+    display: flex;
+    min-width: 100%;
+}
+
+.cart-info-1 {
+    min-width: 45%;
+    margin-right: 10%;
+}
+
+    .cart-info-1 > div {
+        margin-bottom: 20px;
+    }
+
+.cart-info-2 {
+    min-width: 45%;
+}
+
+    .cart-info-2 > div {
+        margin-bottom: 10px;
+    }
+
+label {
+    color: dimgrey;
+}
+
+/*.fee {
+    margin-left: 47px;
+}*/
+
+.fee input {
+    margin-left: 3px;
+    display: inline !important;
+    max-width: 35% !important;
+    margin-right: 2px;
+    text-align: center;
+}
+.btn-order{
+    text-align:center;
+    padding:20px;
+    margin-top:15px;
+}
+
+    .btn-order button {
+        padding: 11px;
+        padding-left: 20px;
+        padding-right: 20px;
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 18px;
+        border: none;
+        border-radius: 20px;
+        background: linear-gradient(to left bottom, orange, orangered);
+    }
+
+h2.order-title {
+    text-align: center;
+    text-transform: uppercase;
+    color: #f7938e;
+    margin-bottom: 25px;
+}
+
+form {
+    padding: 15px;
+    background-color: antiquewhite;
+    opacity: 1.5;
+    border-radius: 10px 10px 2px 2px;
+}
+#infor-banking{
+    margin-left:10px;
+}
+
+#infor-banking span{
+    margin-left:2px;
+    font-size:16px;
+    text-transform:uppercase;
+    font-weight:bold;
+}

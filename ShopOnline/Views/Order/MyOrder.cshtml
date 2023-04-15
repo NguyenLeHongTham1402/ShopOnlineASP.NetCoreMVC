@@ -1,0 +1,186 @@
+﻿@model IEnumerable<ShopOnline.Models.OrderSale>
+@{
+    
+}
+@section CSS{
+    <link href="~/css/User/myorder.css" rel="stylesheet" />
+}
+<h2 class="title-ord">Đơn hàng của tôi</h2>
+
+<div class="distance"></div>
+
+@if (TempData["dNotificationOrder"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Thông báo!</strong> @TempData["dNotificationOrder"].ToString()
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["edNotificationOrder"] != null) { 
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong>Thông báo!</strong> @TempData["edNotificationOrder"].ToString()
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Mã đơn hàng</th>
+            <th>Ngày đặt</th>
+            <th>Ngày nhận</th>
+            <th>Người nhận</th>
+            <th>Địa chỉ</th>
+            <th>Tổng tiền</th>
+            <th>Tình trạng</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:center">
+
+                        @if ((DateTime.Now.Subtract(item.CreatedDate ?? DateTime.Now).TotalHours <= 3 && DateTime.Now.Subtract(item.CreatedDate ?? DateTime.Now).TotalHours >= 0) || User.IsInRole("ADMIN"))
+                        {
+                            <i onclick="deleteFormOrder(`@item.Id`)" data-bs-toggle="modal" data-bs-target="#deModal" class="fa fa-trash" aria-hidden="true"></i>
+                        }
+                        <a asp-action="OrderDtl" asp-controller="Order" asp-route-id="@item.Id"><i class="fa fa-bars" aria-hidden="true"></i></a>
+                        @if (User.IsInRole("ADMIN"))
+                        {
+                            <i onclick="editFormOrder('@item.Address', '@item.Status', @item.Id, '@item.IsPaid.ToString()')" data-bs-toggle="modal" data-bs-target="#edModal" class="fa fa-pencil-square-o text-success" aria-hidden="true"></i>
+                        }
+                    </td>
+                    @{
+                        var paid = item.IsPaid == true ? "Đã thanh toán" : "Chưa thanh toán";
+                        var fee = item.TransportFee;
+                        var total = item.OrderDtls.Sum(x => x.Total) + fee;
+                    }
+                    <td>@item.Id</td>
+                    @{
+                        var recei_date = (item.ReceivedDate ?? DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss");
+                        var create_date = (item.CreatedDate ?? DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss");
+                    }
+                    <td>@create_date</td>
+                    <td>@recei_date</td>
+                    <td>@item.Receiver</td>
+                    <td>@item.Address</td>
+                    <td>@string.Format("{0:N}", total) VNĐ</td>
+                    <td>@paid</td>
+                    @if (item.IsPaid == false && item.Payment == "PayPal")
+                    {
+                        <td>
+                            <a class="btn btn-primary" href="/Order/PaymentWithPaypal/@item.Id">Thanh toán</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<div class="modal" id="deModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hủy đơn hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có thực sự muốn hủy đơn hàng?</p>
+                <input type="text" id="Id" hidden/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button onclick="deleteOrder('/Order/Delete/')" type="button" class="btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="edModal">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Chỉnh sửa thông tin đơn hàng</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="fm-edit-order">
+                    <input class="form-control mt-3 mb-3" type="text" name="Id" readonly/>
+                    <input class="form-control mb-3" name="Address" type="text" placeholder="Nhập địa chỉ . . ." />
+                    <input class="form-control mb-3" name="PhoneReceive" type="tel" placeholder="Nhập số điện thoại người nhận . . ." />
+                    <textarea class="form-control mb-3" name="Note" rows="3" placeholder="Nhập lời nhắn gửi"></textarea>
+                    <input class="form-check-input mb-3" id="IsPaid" name="IsPaid" type="checkbox" value="true" checked />
+                    <label class="form-check-label" for="IsPaid"> Đã thanh toán?</label><br>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                <button onclick="editOrder('/Order/Update/')" type="button" class="btn btn-primary">Lưu</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        function deleteFormOrder(id) {
+            document.getElementById("Id").value = String(id);
+        }
+
+        function deleteOrder(endpoint) {
+            endpoint = endpoint + document.getElementById("Id").value;
+
+            fetch(endpoint, {
+                method: "PATCH"
+            }).then(res => {
+                console.info(res);
+
+                window.location.reload();
+            })
+        }
+
+        function editFormOrder(address, status, id, isPaid) {
+            document.getElementsByName("Address")[0].value = String(address);
+            document.getElementsByName("PhoneReceive")[0].value = String(status).slice(0, String(status).indexOf('#'));
+            document.getElementsByName("Note")[0].value = String(status).slice((String(status).indexOf('#') + 1), String(status).length);
+            document.getElementsByName("Id")[0].value = String(id);
+            if (String(isPaid)==="True") {
+                document.getElementsByName("IsPaid")[0].checked = true;
+            }
+            else {
+                document.getElementsByName("IsPaid")[0].checked = false;
+            }
+        }
+
+        function editOrder(endpoint) {
+            endpoint = endpoint + document.getElementsByName("Id")[0].value;
+            let formData = new FormData(document.querySelector("#fm-edit-order"));
+            fetch(endpoint, {
+                method: "PATCH",
+                body: formData
+            }).then(res => {
+                console.info(res);
+
+                window.location.reload();
+            })
+        }
+    </script>
+}

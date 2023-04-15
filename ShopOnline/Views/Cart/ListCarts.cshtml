@@ -1,0 +1,101 @@
+﻿@model IEnumerable<ShopOnline.Models.Cart>
+@{
+}
+@section CSS{
+    <link href="~/css/User/list-carts.css" rel="stylesheet" />
+}
+<h2 class="cart-title">Giỏ hàng của tôi</h2>
+
+<div class="carts-1">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mã sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.productId</td>
+                        <td>@item.productName</td>
+                        <td>@string.Format("{0:N}", item.price) VNĐ</td>
+                        <td>
+                            <input onblur="editQuantity('/Cart/UpdateCart/@item.productId',this)" id="quantity" min="0" type="number" value="@item.quantity" class="form-control" />
+                        </td>
+                        <td>@string.Format("{0:N}", item.total) VNĐ</td>
+                        <td>
+                            <button onclick="fmDeleteCart(@item.productId)" data-bs-toggle="modal" data-bs-target="#deModel" class="btn btn-danger">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td style="font-style:italic;text-align:center;" colspan="6">Không có sản phẩm trong giỏ hàng!!!</td>
+                </tr>
+            }
+
+
+        </tbody>
+
+    </table>
+</div>
+@{
+    int totalQuantity = 0;
+    double totalMoney = 0;
+    if (Model != null)
+    {
+        totalQuantity = Model.Sum(x => x.quantity);
+        totalMoney = Model.Sum(x => x.total);
+    }
+}
+
+<div class="money">
+    <p><span>Tổng tiền: </span>@string.Format("{0:N}", totalMoney) VNĐ</p>
+    <div><span>Tổng số sản phẩm:</span> @totalQuantity</div>
+</div>
+@if (User.Identity.IsAuthenticated==true && Model!=null)
+{
+    <div class="payment">
+        <a asp-action="Order" asp-controller="Order">Thanh toán</a>
+    </div>
+}
+else
+{
+    <p style="font-style:italic;text-align:center;">*Nếu bạn chưa đăng nhập, vui lòng hãy <a asp-action="SignIn" asp-controller="User">đăng nhập</a>. Nếu chưa chọn sản phẩm, vui lòng thêm sản phẩm vào giỏ hàng.</p>
+}
+
+
+<div class="modal" id="deModel" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa sản phẩm ra khỏi giỏ hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có thực sự muốn xóa không?</p>
+                <input type="text" id="productId" hidden />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button onclick="deleteCart('/Cart/DeleteCart/')" type="button" class="btn btn-primary">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/js/list-carts.js" type="text/javascript"></script>
+}
